@@ -10,6 +10,6 @@
 
         //conexiones
         public virtual Pedido Pedido { get; set; }
-        public virtual Cosecha Cosecha { get; set; }
+        public virtual Cosecha Cosecha { get; set; } 
     }
 }

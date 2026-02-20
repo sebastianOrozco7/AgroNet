@@ -10,5 +10,6 @@
 
         //conexiones
         public virtual Usuario Usuario { get; set; }
+        public virtual ICollection<DetallePedido> DetallePedidos { get; set; }
     }
 }
