@@ -2,7 +2,7 @@
 {
     public class Trazabilidad
     {
-        public int IdTrazabilidad { get; set; }
+        public int TrazabilidadId { get; set; }
         public int IdCosecha { get; set; }
         public string EstadoAnterior { get; set; }
         public string EstadoNuevo { get; set; }

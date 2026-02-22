@@ -2,7 +2,7 @@
 {
     public class Finca
     {
-        public int IdFinca { get; set; }
+        public int FincaId { get; set; }
         public int IdUsuario { get; set; }
         public string NombreFinca { get; set; }
         public string Municipio { get; set; }

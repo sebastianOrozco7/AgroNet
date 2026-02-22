@@ -2,7 +2,7 @@
 {
     public class Pedido
     {
-        public int IdPedido { get; set; }
+        public int PedidoId { get; set; }
         public int IdUsuario { get; set; }
         public DateTime FechaPedido { get; set; } = DateTime.Now;
         public decimal TotalPagar { get; set; }

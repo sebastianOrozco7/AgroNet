@@ -2,7 +2,7 @@
 {
     public class Cosecha
     {
-        public int IdCosecha {  get; set; }
+        public int CosechaId {  get; set; }
         public int IdFinca { get; set; }
         public int IdProducto { get; set; }
         public decimal CantidadDisponible { get; set; }

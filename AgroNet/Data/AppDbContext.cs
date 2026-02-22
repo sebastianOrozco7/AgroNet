@@ -56,19 +56,19 @@ namespace AgroNet.Data
             modelBuilder.Entity<Pedido>()
                 .HasMany(p => p.DetallePedidos)
                 .WithOne(d => d.Pedido)
-                .HasForeignKey(d => d.IdDetallePedido);
+                .HasForeignKey(d => d.IdPedido);
 
             //Relacion Cosecha --> DetallePedido
             modelBuilder.Entity<Cosecha>()
                 .HasMany(c => c.DetallePedidos)
                 .WithOne(d => d.Cosecha)
-                .HasForeignKey(d => d.IdDetallePedido);
+                .HasForeignKey(d => d.IdCosecha);
 
             //Relacion Cosecha --> Trazabilidades
             modelBuilder.Entity<Cosecha>()
                 .HasMany(c => c.Trazabilidades)
                 .WithOne(t => t.Cosecha)
-                .HasForeignKey(t => t.IdTrazabilidad);
+                .HasForeignKey(t => t.IdCosecha);
 
 
             // --- CONFIGURACIÓN DE DECIMALES (Precisión) ---

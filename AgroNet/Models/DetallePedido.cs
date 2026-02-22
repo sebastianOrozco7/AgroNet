@@ -2,7 +2,7 @@
 {
     public class DetallePedido
     {
-        public int IdDetallePedido { get; set; }
+        public int DetallePedidoId { get; set; }
         public int IdPedido { get; set; }
         public int IdCosecha { get; set; }
         public decimal CantidadComprada { get; set; }
