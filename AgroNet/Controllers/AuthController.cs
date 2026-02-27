@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AgroNet.Interfaces;
 using AgroNet.DTOs.UsuarioDto;
 using Microsoft.AspNetCore.Identity.Data;
+using AgroNet.Interfaces.Usuario;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

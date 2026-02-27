@@ -5,8 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using AgroNet.Mapping;
-using AgroNet.Interfaces;
 using AgroNet.Services;
+using AgroNet.Interfaces.Usuario;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +61,7 @@ builder.Services.AddAuthentication(options =>
 // --------------------------------
 
 builder.Services.AddScoped<IAuthService,AuthService>();
+builder.Services.AddScoped<IPerfilService,PerfilService>();
 
 // --------------------------------
 // 4. Registro de AutoMapper

@@ -1,5 +1,4 @@
-﻿using AgroNet.Interfaces;
-using AutoMapper;
+﻿using AutoMapper;
 using AgroNet.Data;
 using AgroNet.Models;
 using AgroNet.DTOs.UsuarioDto;
@@ -10,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using AgroNet.Interfaces.Usuario;
 namespace AgroNet.Services
 {
     public class AuthService : IAuthService

@@ -1,6 +1,6 @@
 ﻿using AgroNet.DTOs.UsuarioDto;
 
-namespace AgroNet.Interfaces
+namespace AgroNet.Interfaces.Usuario
 {
     public interface IAuthService
     {

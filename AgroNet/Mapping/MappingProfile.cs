@@ -14,6 +14,9 @@ namespace AgroNet.Mapping
 
             //Mapeo de Usuario --> UsuarioReadDto
             CreateMap<Usuario, UsuarioReadDto>();
+
+            //Mapeo de UsuarioUpdate --> Usuario
+            CreateMap<UsuarioUpdateDto, Usuario>();
         }
     }
 }
