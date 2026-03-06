@@ -8,7 +8,7 @@
         public decimal CantidadDisponible { get; set; }
         public decimal PrecioPorUnidad { get; set; }
         public DateTime FechaEstimada {  get; set; }
-        public string Estado { get; set; }
+        public EstadoCosecha Estado { get; set; }
 
         //Conexiones 
         public virtual Finca Finca { get; set; }

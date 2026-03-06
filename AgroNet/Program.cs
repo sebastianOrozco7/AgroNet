@@ -8,7 +8,7 @@ using AgroNet.Mapping;
 using AgroNet.Services;
 using AgroNet.Interfaces.Usuario;
 using AgroNet.Interfaces.Finca;
-
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -114,8 +114,16 @@ builder.Services.AddSwaggerGen(c =>
 // Add services to the container.
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-//builder.Services.AddOpenApi();
-builder.Services.AddControllers();
+
+/*esta pequeña configuracion ayudara a que el frontend no sufra al momento de hacer el menu desplegable con 
+  las palabras clave del estado de cosecha */
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Esto le dice a mi API: "Si te envian un Enum como texto, entiéndelo y conviértelo"
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();

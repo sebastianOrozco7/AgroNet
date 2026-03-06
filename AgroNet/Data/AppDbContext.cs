@@ -88,6 +88,12 @@ namespace AgroNet.Data
             modelBuilder.Entity<DetallePedido>().Property(d => d.PrecioUnitario).HasPrecision(10, 2);
             modelBuilder.Entity<DetallePedido>().Property(d => d.CantidadComprada).HasPrecision(10, 2);
 
+
+            // --- CONFIGURACIÓN DE CONVERSION EN COSECHA ---
+
+            modelBuilder.Entity<Cosecha>()
+                .Property(c => c.Estado)
+                .HasConversion<string>();
         }
     }
 }
