@@ -51,24 +51,52 @@ namespace AgroNet.Services
             return _mapper.Map<IEnumerable<FincaReadDto>>(Fincas);
         }
 
-        public async Task<FincaReadDto> VerFincaPorId(int FincaId)
+        public async Task<FincaReadDto> VerFincaPorId(int UsuarioId, int FincaId)
         {
-            FincaReadDto fincaReadDto = new FincaReadDto();
-            return fincaReadDto;
+            var Finca = await _appDbContext.Fincas
+                .Include(f => f.Usuario)
+                .Where(f => f.IdUsuario == UsuarioId && f.FincaId == FincaId)
+                .FirstOrDefaultAsync();
+
+            //en caso de que no encuentre la finca entonces que me retorne null
+            if (Finca == null) return null;
+
+            return _mapper.Map<FincaReadDto>(Finca);
+
+                
         }
 
 
-        public async Task<FincaReadDto> ActualizarFinca(int FincaId, int UsuarioId, FincaUpdateDto fincaUpdateDto)
+        public async Task<FincaReadDto> ActualizarFinca(int fincaId, int usuarioId, FincaUpdateDto fincaUpdateDto)
         {
+            var FincaExiste = await _appDbContext.Fincas
+                .Include(f => f.Usuario)
+                .Where(f => f.IdUsuario == usuarioId && f.FincaId == fincaId)
+                .FirstOrDefaultAsync();
 
-            FincaReadDto fincaReadDto = new FincaReadDto();
-            return fincaReadDto;
+            if (FincaExiste == null) return null;
+
+            _mapper.Map(fincaUpdateDto, FincaExiste);
+            await _appDbContext.SaveChangesAsync();
+
+            return _mapper.Map<FincaReadDto>(FincaExiste);
+
         }
 
-        public async Task<bool> EliminarFinca(int FincaId, int UsuarioId)
+        public async Task<bool> EliminarFinca(int fincaId, int usuarioId)
         {
+            var FincaExiste = await _appDbContext.Fincas
+                .Where(f => f.IdUsuario == usuarioId && f.FincaId == fincaId)
+                .FirstOrDefaultAsync();
 
-            return false;
+            if (FincaExiste == null) return false;
+
+            //Eliminamos la finca de la base de datos y guardamos
+            _appDbContext.Fincas.Remove(FincaExiste);
+            await _appDbContext.SaveChangesAsync();
+
+            return true;
+
         }
     }
 }

@@ -10,7 +10,7 @@ namespace AgroNet.Interfaces.Finca
 
         //Leer
         Task<IEnumerable<FincaReadDto>> VerFincasDelUsuario(int UsuarioId);
-        Task<FincaReadDto> VerFincaPorId(int FincaId);
+        Task<FincaReadDto> VerFincaPorId(int UsuarioId, int FincaId);
 
         //Actualizar
         Task<FincaReadDto> ActualizarFinca(int FincaId, int UsuarioId, FincaUpdateDto fincaUpdateDto);
