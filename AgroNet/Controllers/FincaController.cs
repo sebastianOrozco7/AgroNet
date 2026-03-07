@@ -1,11 +1,7 @@
 ﻿using AgroNet.DTOs.FincasDto;
-using AgroNet.DTOs.UsuarioDto;
 using AgroNet.Interfaces.Finca;
-using AgroNet.Interfaces.Usuario;
-using AgroNet.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using System.Security.Claims;
 namespace AgroNet.Controllers
 {
