@@ -6,7 +6,7 @@ namespace AgroNet.DTOs.FincasDto
     public class FincaCreateDto
     {
         [Required(ErrorMessage = "El Nombre es obligatorio")]
-        public string NombreFinca { get; set; }
+        public string Nombre { get; set; }
 
         [Required(ErrorMessage = "El Municipio es obligatorio")]
         public string Municipio { get; set; }

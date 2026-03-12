@@ -19,18 +19,20 @@ namespace AgroNet.Controllers
             _perfilService = perfilService;
         }
 
+        private int ObtenerUsuarioIdDelToken()
+        {
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+            return int.Parse(claim.Value);
+        }
 
         // PUT api/<PerfilUsuarioController>/5
         [Authorize]
         [HttpPut("Actualizar")]
         public async Task<ActionResult<UsuarioReadDto>> Actualizar(UsuarioUpdateDto update)
         {
-            //validamos si es nulo
-            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (claim == null) return Unauthorized("No se encontró el ID en el token");
-
+            
             // Extraemos el ID del Claim del Token
-            var usuarioId = int.Parse(claim.Value);
+            var usuarioId = ObtenerUsuarioIdDelToken();
 
             var usuarioActualizado = await _perfilService.ActualizarPerfil(usuarioId, update);
 

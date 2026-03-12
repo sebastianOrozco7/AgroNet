@@ -17,15 +17,19 @@ namespace AgroNet.Controllers
             _fincaService = fincaService;
         }
 
+        //metodo para refactorizar el codigo y obtener el token
+        private int ObtenerUsuarioIdDelToken()
+        {
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+            return int.Parse(claim.Value);
+        }
+
         [HttpPost]
         public async Task<ActionResult<FincaReadDto>> RegistrarFinca(FincaCreateDto fincaCreateDto)
         {
-            //se debe extraer el ID del dueño desde el token 
-            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (claim == null) return Unauthorized("Token invalido");
-
+          
             //le asignamos el claim a la variable usuarioId
-            var usuarioId = int.Parse(claim.Value);
+            var usuarioId = ObtenerUsuarioIdDelToken();
 
             //utilizamos el metodo del servicio para crear la finca
             var NuevaFinca = await _fincaService.CrearFinca(usuarioId, fincaCreateDto);
@@ -37,10 +41,7 @@ namespace AgroNet.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FincaReadDto>>> VerTodasLasFincas()
         {
-            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (claim == null) return Unauthorized("Token invalido");
-
-            var usuarioId = int.Parse(claim.Value);
+            var usuarioId = ObtenerUsuarioIdDelToken();
 
             //utilizamos el metodo del servicio
             var Fincas = await _fincaService.VerFincasDelUsuario(usuarioId);
@@ -53,10 +54,8 @@ namespace AgroNet.Controllers
         [HttpGet("{FincaId}")]
         public async Task<ActionResult<FincaReadDto>> VerFincaPorId(int FincaId)
         {
-            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (claim == null) return Unauthorized("Token invalido");
 
-            var UsuarioId = int.Parse(claim.Value);
+            var UsuarioId = ObtenerUsuarioIdDelToken();
 
             var Finca = await _fincaService.VerFincaPorId(UsuarioId, FincaId);
 
@@ -69,10 +68,7 @@ namespace AgroNet.Controllers
         public async Task<ActionResult<FincaReadDto>> ActualizarFinca(int fincaId, FincaUpdateDto fincaUpdateDto)
         {
 
-            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (claim == null) return Unauthorized("Token invalido");
-
-            var UsuarioId = int.Parse(claim.Value);
+            var UsuarioId = ObtenerUsuarioIdDelToken();
 
             var Finca = await _fincaService.ActualizarFinca(fincaId, UsuarioId,fincaUpdateDto);
 
@@ -84,10 +80,8 @@ namespace AgroNet.Controllers
         [HttpDelete("{fincaId}")]
         public async Task<ActionResult<bool>> EliminarFinca(int fincaId)
         {
-            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (claim == null) return Unauthorized("Token invalido");
 
-            var UsuarioId = int.Parse(claim.Value);
+            var UsuarioId = ObtenerUsuarioIdDelToken();
 
             var fincaEliminar = await _fincaService.EliminarFinca(fincaId, UsuarioId);
 
