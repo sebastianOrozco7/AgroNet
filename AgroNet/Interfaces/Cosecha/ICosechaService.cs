@@ -11,6 +11,7 @@ namespace AgroNet.Interfaces.Cosecha
         //Leer
         public Task<IEnumerable<CosechaReadDto>> VerCosechasDelUsuario(int usuarioId);
         public Task<CosechaReadDto> VerCosechaPorId(int usuarioId, int cosechaId);
+        public Task<IEnumerable<CosechaReadDto>> CatalogoDeCosechas();
 
         //actualizar
         public Task<CosechaReadDto> ActualizarCosecha (int  usuarioId, int cosechaId, CosechaUpdateDto cosechaUpdateDto);

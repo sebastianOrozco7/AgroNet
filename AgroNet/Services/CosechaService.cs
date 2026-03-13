@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 
+
 namespace AgroNet.Services
 {
     public class CosechaService : ICosechaService
@@ -33,6 +34,8 @@ namespace AgroNet.Services
             _appDbContext.Cosechas.Add(nuevaCosecha);
             await _appDbContext.SaveChangesAsync();
 
+            // Cargamos los datos de la finca y del producto
+            // para que la magia de AutoMapper (NombreFinca, NombreProducto) funcione en el return
             await _appDbContext.Entry(nuevaCosecha).Reference(c => c.Finca).LoadAsync();
             await _appDbContext.Entry(nuevaCosecha).Reference(c => c.Producto).LoadAsync();
 
@@ -63,6 +66,18 @@ namespace AgroNet.Services
             if (cosecha == null) return null;
 
             return _mapper.Map<CosechaReadDto>(cosecha);
+        }
+
+        public async Task<IEnumerable<CosechaReadDto>> CatalogoDeCosechas()
+        {
+            //esta consulta me traera las cosechas disponibles, en crecimiento y con una cantidad disponible mayor a 0;
+            var catalogoCosechas = await _appDbContext.Cosechas
+                .Include(c => c.Finca)
+                .Include(c => c.Producto)
+                .Where(c => (c.Estado == EstadoCosecha.Disponible || c.Estado == EstadoCosecha.EnCrecimiento) && c.CantidadDisponible > 0)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<CosechaReadDto>>(catalogoCosechas);
         }
 
         public async Task<CosechaReadDto> ActualizarCosecha(int usuarioId, int cosechaId, CosechaUpdateDto cosechaUpdateDto)
