@@ -64,11 +64,11 @@ namespace AgroNet.Data
                 .WithOne(d => d.Cosecha)
                 .HasForeignKey(d => d.IdCosecha);
 
-            //Relacion Cosecha --> Trazabilidades
-            modelBuilder.Entity<Cosecha>()
-                .HasMany(c => c.Trazabilidades)
-                .WithOne(t => t.Cosecha)
-                .HasForeignKey(t => t.IdCosecha);
+            //Relacion Pedido --> Trazabilidades
+            modelBuilder.Entity<Pedido>()
+                .HasMany(p => p.Trazabilidades)
+                .WithOne(t => t.Pedido)
+                .HasForeignKey(t => t.IdPedido);
 
 
             // --- CONFIGURACIÓN DE DECIMALES (Precisión) ---

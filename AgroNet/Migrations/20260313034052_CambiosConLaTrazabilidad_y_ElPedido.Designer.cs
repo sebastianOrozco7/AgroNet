@@ -4,6 +4,7 @@ using AgroNet.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgroNet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260313034052_CambiosConLaTrazabilidad_y_ElPedido")]
+    partial class CambiosConLaTrazabilidad_y_ElPedido
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,6 +207,9 @@ namespace AgroNet.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TrazabilidadId"));
 
+                    b.Property<int?>("CosechaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("EstadoAnterior")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -223,6 +229,8 @@ namespace AgroNet.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("TrazabilidadId");
+
+                    b.HasIndex("CosechaId");
 
                     b.HasIndex("IdPedido");
 
@@ -328,6 +336,10 @@ namespace AgroNet.Migrations
 
             modelBuilder.Entity("AgroNet.Models.Trazabilidad", b =>
                 {
+                    b.HasOne("AgroNet.Models.Cosecha", null)
+                        .WithMany("Trazabilidades")
+                        .HasForeignKey("CosechaId");
+
                     b.HasOne("AgroNet.Models.Pedido", "Pedido")
                         .WithMany("Trazabilidades")
                         .HasForeignKey("IdPedido")
@@ -351,6 +363,8 @@ namespace AgroNet.Migrations
             modelBuilder.Entity("AgroNet.Models.Cosecha", b =>
                 {
                     b.Navigation("DetallePedidos");
+
+                    b.Navigation("Trazabilidades");
                 });
 
             modelBuilder.Entity("AgroNet.Models.Finca", b =>
