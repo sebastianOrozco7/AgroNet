@@ -66,9 +66,11 @@ namespace AgroNet.Controllers
         }
 
         [HttpGet("Catalogo")]
-        public async Task<ActionResult<IEnumerable<CosechaReadDto>>> CatalogoDeCosechas()
+        public async Task<ActionResult<IEnumerable<CosechaReadDto>>> CatalogoDeCosechas(
+            [FromQuery] string? producto,
+            [FromQuery] string? municipio)
         {
-            var catalogoCosechas = await _cosechaService.CatalogoDeCosechas();
+            var catalogoCosechas = await _cosechaService.CatalogoDeCosechas(producto, municipio);
 
             if (catalogoCosechas == null || !catalogoCosechas.Any()) return NotFound("No se encontraron Cosechas Disponibles");
 

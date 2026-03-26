@@ -16,7 +16,8 @@ namespace AgroNet.Mapping
             //Mapeo de UsuarioCreateDto --> Usuario
             CreateMap<UsuarioCreateDto, Usuario>();
             //Mapeo de Usuario --> UsuarioReadDto
-            CreateMap<Usuario, UsuarioReadDto>();
+            CreateMap<Usuario, UsuarioReadDto>()
+                .ForMember(dest => dest.RolNombre, opt => opt.MapFrom(src => src.Rol.NombreRol));
             //Mapeo de UsuarioUpdate --> Usuario
             CreateMap<UsuarioUpdateDto, Usuario>();
 

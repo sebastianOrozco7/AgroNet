@@ -37,8 +37,15 @@ namespace AgroNet.Services
             _appDbContext.Usuarios.Add(UsuarioNuevo);
             await _appDbContext.SaveChangesAsync();
 
+            //rebuscar el usuario para devolver con el rol
+            var usuarioConRol = await _appDbContext.Usuarios
+                .Include(u => u.Rol)
+                .FirstOrDefaultAsync(u => u.UsuarioId == UsuarioNuevo.UsuarioId);
+
+            await _appDbContext.Entry(usuarioConRol).Reference(u => u.Rol).LoadAsync();
+
             //Mapeo de la entidad guardada al DTO de lectura para devolverlo (sin password)
-            return _mapper.Map<UsuarioReadDto>(UsuarioNuevo);
+            return _mapper.Map<UsuarioReadDto>(usuarioConRol);
         }
         public async Task<string?> Login(string Correo, string Password)
         {

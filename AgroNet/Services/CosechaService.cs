@@ -68,16 +68,28 @@ namespace AgroNet.Services
             return _mapper.Map<CosechaReadDto>(cosecha);
         }
 
-        public async Task<IEnumerable<CosechaReadDto>> CatalogoDeCosechas()
+        public async Task<IEnumerable<CosechaReadDto>> CatalogoDeCosechas(string? producto, string? municipio)
         {
-            //esta consulta me traera las cosechas disponibles, en crecimiento y con una cantidad disponible mayor a 0;
-            var catalogoCosechas = await _appDbContext.Cosechas
+            //esta consulta base me traera las cosechas disponibles, en crecimiento y con una cantidad disponible mayor a 0;
+            var Query = _appDbContext.Cosechas
                 .Include(c => c.Finca)
                 .Include(c => c.Producto)
                 .Where(c => (c.Estado == EstadoCosecha.Disponible || c.Estado == EstadoCosecha.EnCrecimiento) && c.CantidadDisponible > 0)
-                .ToListAsync();
+                .AsQueryable(); // Use .AsQueryable() para que no ir directamenta a la base de datos
 
-            return _mapper.Map<IEnumerable<CosechaReadDto>>(catalogoCosechas);
+            //verificamos si el usuario lleno los filtros
+            if (!string.IsNullOrWhiteSpace(producto))
+                Query = Query.Where(c => c.Producto.Nombre.Contains(producto));   //.Contains() es el equivalente a usar "LIKE '%palabra%'" en SQL
+
+
+            if (!string.IsNullOrWhiteSpace(municipio))
+                Query = Query.Where(c => c.Finca.Municipio.Contains(municipio));
+
+            //Despues de verificar si el usuario lleno los filtros, ejecutamos la consulta
+            var cosechasFiltradas = await Query.ToListAsync();
+
+
+            return _mapper.Map<IEnumerable<CosechaReadDto>>(cosechasFiltradas);
         }
 
         public async Task<CosechaReadDto> ActualizarCosecha(int usuarioId, int cosechaId, CosechaUpdateDto cosechaUpdateDto)
