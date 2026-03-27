@@ -4,6 +4,7 @@ using AgroNet.DTOs;
 using AgroNet.DTOs.UsuarioDto;
 using AgroNet.DTOs.FincasDto;
 using AgroNet.DTOs.CosechaDto;
+using AgroNet.DTOs.PedidoDto;
 
 namespace AgroNet.Mapping
 {
@@ -41,6 +42,15 @@ namespace AgroNet.Mapping
                 .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado.ToString())); // Uso .ToString() para que el número (1,2,3,4) se convierta en la palabra ("Disponible")
             //Mapeo de CosechaUpdate --> Cosecha
             CreateMap<CosechaUpdateDto, Cosecha>();
+
+
+            //PEDIDOS//
+
+            //Mapeo de PedidoCreateDto --> Pedido
+            CreateMap<PedidoCreateDto, Pedido>();
+            //Mapeo de Pedido --> PedidoReadDto
+            CreateMap<Pedido,  PedidoReadDto>()
+                .ForMember(dest => dest.ProductoNombre, opt => opt.MapFrom(src => src.Cosecha.Producto.Nombre));
         }
     }
 }
