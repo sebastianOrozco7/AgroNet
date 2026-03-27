@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using AgroNet.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AgroNet.Data
 {
@@ -70,6 +71,12 @@ namespace AgroNet.Data
                 .WithOne(t => t.Pedido)
                 .HasForeignKey(t => t.IdPedido);
 
+            //Relacion cosecha --> pedido
+            modelBuilder.Entity<Cosecha>()
+                .HasMany(c => c.Pedidos)
+                .WithOne(p => p.Cosecha)
+                .HasForeignKey(p => p.IdCosecha);
+
 
             // --- CONFIGURACIÓN DE DECIMALES (Precisión) ---
 
@@ -89,11 +96,18 @@ namespace AgroNet.Data
             modelBuilder.Entity<DetallePedido>().Property(d => d.CantidadComprada).HasPrecision(10, 2);
 
 
-            // --- CONFIGURACIÓN DE CONVERSION EN COSECHA ---
+            // --- CONFIGURACIÓN DE CONVERSION EN ESTADO COSECHA ---
 
             modelBuilder.Entity<Cosecha>()
                 .Property(c => c.Estado)
                 .HasConversion<string>();
+
+            // --- CONFIGURACIÓN DE CONVERSION EN ESTADO PEDIDO ---
+            modelBuilder.Entity<Pedido>()
+                .Property(p => p.Estado)
+                .HasConversion<string>();
+
+
         }
     }
 }
