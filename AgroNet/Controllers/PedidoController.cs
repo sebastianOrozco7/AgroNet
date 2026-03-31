@@ -41,6 +41,15 @@ namespace AgroNet.Controllers
             return Ok(NuevoPedido);
         }
 
+        [HttpPatch("{pedidoId}/estado")]
+        public async Task<ActionResult<PedidoReadDto>> ModificarEstadoPedido(int pedidoId, [FromBody]EstadoPedido estado)
+        {
+            int usuarioId = ObtenerUsuarioIdDelToken();
 
+            var PedidoActualizado = await _pedidoService.ModificarEstadoPedido(pedidoId,usuarioId,estado);
+
+            return Ok(PedidoActualizado);
+
+        }
     }
 }
