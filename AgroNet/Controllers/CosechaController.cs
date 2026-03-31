@@ -30,7 +30,7 @@ namespace AgroNet.Controllers
         [HttpPost]
         public async Task<ActionResult<CosechaReadDto>> RegistrarCosecha (CosechaCreateDto cosechaCreateDto)
         {
-            //le asignamos el claim a la variable usuarioId
+            //le asigno el claim a la variable usuarioId
             int usuarioId = ObtenerUsuarioIdDelToken();
 
             //usamos el metodo del servicio para crear la cosecha
