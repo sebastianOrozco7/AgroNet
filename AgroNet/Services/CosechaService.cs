@@ -77,7 +77,7 @@ namespace AgroNet.Services
                 .Where(c => (c.Estado == EstadoCosecha.Disponible || c.Estado == EstadoCosecha.EnCrecimiento) && c.CantidadDisponible > 0)
                 .AsQueryable(); // Use .AsQueryable() para que no ir directamenta a la base de datos
 
-            //verificamos si el usuario lleno los filtros
+            //Verifico si el usuario lleno los filtros
             if (!string.IsNullOrWhiteSpace(producto))
                 Query = Query.Where(c => c.Producto.Nombre.Contains(producto));   //.Contains() es el equivalente a usar "LIKE '%palabra%'" en SQL
 

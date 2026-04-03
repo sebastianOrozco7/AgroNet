@@ -72,7 +72,7 @@ namespace AgroNet.Controllers
         {
             var catalogoCosechas = await _cosechaService.CatalogoDeCosechas(producto, municipio);
 
-            if (catalogoCosechas == null || !catalogoCosechas.Any()) return NotFound("No se encontraron Cosechas Disponibles");
+            if (catalogoCosechas == null || !catalogoCosechas.Any()) return NotFound("No se encontraron Cosechas Disponibles"); //  primero verifica si la lista existe (si no es null) y despues con .any() verifica si la lista no tiene elementos
 
             return Ok(catalogoCosechas);
         }

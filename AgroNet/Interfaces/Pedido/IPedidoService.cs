@@ -12,5 +12,7 @@ namespace AgroNet.Interfaces.Pedido
         //Actualizar
         public Task<PedidoReadDto> ModificarEstadoPedido(int pedidoId, int usuarioAgricultorId, EstadoPedido estadoPedido);
 
+        //Leer
+        public Task<IEnumerable<PedidoReadDto>> VerPedidosComprador(int UsuarioId, string? estado);
     }
 }
