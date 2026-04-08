@@ -75,7 +75,7 @@ namespace AgroNet.Services
                 .Include(p => p.Cosecha)
                     .ThenInclude(c => c.Producto)
                 .Where(p => p.IdUsuario == usuarioId)
-                .AsQueryable();  // Use .AsQueryable() para que no ir directamenta a la base de datos
+                .AsQueryable();  // Use .AsQueryable() para no ir directamenta a la base de datos
 
             //Verifico si el usuario lleno el filtro
             if (!string.IsNullOrWhiteSpace(estado))
@@ -98,6 +98,35 @@ namespace AgroNet.Services
             return _mapper.Map<IEnumerable<PedidoReadDto>>(ListaPedidos);
         }
 
+        public async Task<IEnumerable<PedidoReadDto>> VerPedidosAgricultor(int usuarioId, string? estado)
+        {
+            var Query = _appDbContext.Pedidos
+                .Include (p => p.Usuario)
+                .Include(p => p.Cosecha)
+                    .ThenInclude (c => c.Producto)
+                .Where(p => p.Cosecha.Finca.IdUsuario ==  usuarioId) // navego entre tablas hasta el usuario agricultor
+                .AsQueryable();
+
+            //Verifico si el usuario lleno el filtro
+            if (!string.IsNullOrWhiteSpace(estado))
+            {
+                //el filtro es de tipo string pero en la base de datos es de tipo Enum entonces primero debo convertir ese string a un enum para aplicar el filtro
+                if (Enum.TryParse<EstadoPedido>(estado, true, out var EstadoEnum)) //aqui estoy convirtiendo el string a enum y el resultado lo devuelvo en la var EstadoEnum
+                {
+                    //Si la conversion se realizo bien entonces agrego a el Query este filtro de comparacion
+                    Query = Query.Where(p => p.Estado == EstadoEnum);
+                }
+                else
+                {
+                    throw new Exception("No se encontraron Pedidos");
+                }
+            }
+
+            //Despues de verificar si el usuario lleno el filtro, ejecutamos la consulta
+            var ListaPedidos = await Query.ToListAsync();
+
+            return _mapper.Map<IEnumerable<PedidoReadDto>>(ListaPedidos);
+        }
 
         //METODOS SECUNDARIOS
 

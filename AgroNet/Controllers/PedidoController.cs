@@ -52,7 +52,7 @@ namespace AgroNet.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("Cliente")]
         public async Task<ActionResult<IEnumerable<PedidoReadDto>>> VerPedidosDelComprador(
             [FromQuery] string? Estado)
         {
@@ -63,6 +63,20 @@ namespace AgroNet.Controllers
             if(PedidosComprador == null || !PedidosComprador.Any()) return NotFound("No se encontraron Pedidos"); // primero verifica si la lista existe (si no es null) y despues con .any() verifica si la lista no tiene elementos
 
             return Ok(PedidosComprador);
+        }
+
+        [HttpGet("Agricultor")]
+        public async Task<ActionResult<IEnumerable<PedidoReadDto>>> VerPedidosAgricultor(
+            [FromQuery] string? Estado)
+        {
+
+            int usuarioId = ObtenerUsuarioIdDelToken();
+
+            var PedidosAgricultor = await _pedidoService.VerPedidosAgricultor(usuarioId, Estado);
+
+            if (PedidosAgricultor == null || !PedidosAgricultor.Any()) return NotFound("No se encontraron Pedidos"); // primero verifica si la lista existe (si no es null) y despues con .any() verifica si la lista no tiene elementos
+
+            return Ok(PedidosAgricultor);
         }
     }
 }
