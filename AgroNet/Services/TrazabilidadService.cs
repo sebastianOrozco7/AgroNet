@@ -37,8 +37,32 @@ namespace AgroNet.Services
 
         }
 
+        public async Task<IEnumerable<TrazabilidadReadDto>> VerTrazabilidadesComprador(int usuarioId)
+        {
+            //traigo las trazabilidades del usuario
+            var trazabilidades = await _appDbContext.Trazabilidad
+                .Where(t => t.Pedido.IdUsuario == usuarioId)
+                .ToListAsync();
 
-         //METODOS SECUNDARIOS
+            //Mapeo
+            return _mapper.Map<IEnumerable<TrazabilidadReadDto>>(trazabilidades);
+        }
+
+        public async Task<IEnumerable<TrazabilidadReadDto>> VerTrazabilidadesAgricultor(int usuarioId)
+        {
+            //traigo las trazabilidades del usuario Agricultor
+            var trazabilidades = await _appDbContext.Trazabilidad
+                .Include(t => t.Pedido)
+                    .ThenInclude(p => p.Cosecha)
+                        .ThenInclude(c => c.Finca)
+                .Where(t => t.Pedido.Cosecha.Finca.IdUsuario == usuarioId)
+                .ToListAsync();
+
+            //Mapeo
+            return _mapper.Map<IEnumerable<TrazabilidadReadDto>>(trazabilidades);
+        }
+
+        //METODOS SECUNDARIOS
         private Trazabilidad PrepararTrazabilidad(Pedido pedido, TrazabilidadCreateDto trazabilidad)
         {
             //Guardo el estado actual del pedido antes de cambiarlo

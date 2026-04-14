@@ -41,7 +41,25 @@ namespace AgroNet.Controllers
             return Ok(Trazabilidad);
         }
 
-       
+        [HttpGet("Cliente")]
+        public async Task<ActionResult<IEnumerable<TrazabilidadReadDto>>> VerTrazabilidadesDelComprador()
+        {
+            int usuarioId = ObtenerUsuarioIdDelToken();
+
+            var Trazabilidades = await _trazabilidadService.VerTrazabilidadesComprador(usuarioId);
+
+            return Ok(Trazabilidades);
+        }
+
+        [HttpGet("Agricultor")]
+        public async Task<ActionResult<IEnumerable<TrazabilidadReadDto>>> VerTrazabilidadesDelAgricultor()
+        {
+            int usuarioId = ObtenerUsuarioIdDelToken();
+
+            var Trazabilidades = await _trazabilidadService.VerTrazabilidadesAgricultor(usuarioId);
+
+            return Ok(Trazabilidades);
+        }
 
     }
 }
