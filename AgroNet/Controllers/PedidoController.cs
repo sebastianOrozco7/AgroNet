@@ -78,5 +78,22 @@ namespace AgroNet.Controllers
 
             return Ok(PedidosAgricultor);
         }
+
+        [HttpPost("Cancelar/{pedidoId}")]
+        public async Task<IActionResult> CancelarPedido(int pedidoId)
+        {
+            try
+            {
+                int usuarioId = ObtenerUsuarioIdDelToken();
+
+                await _pedidoService.CancelarPedido(usuarioId, pedidoId);
+
+                return Ok(new { mensaje = "El pedido se canceló correctamente y el stock ha sido devuelto." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

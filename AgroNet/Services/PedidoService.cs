@@ -1,5 +1,6 @@
 ﻿using AgroNet.Data;
 using AgroNet.DTOs.PedidoDto;
+using AgroNet.DTOs.TrazabilidadDto;
 using AgroNet.Interfaces.Pedido;
 using AgroNet.Models;
 using AutoMapper;
@@ -128,7 +129,46 @@ namespace AgroNet.Services
             return _mapper.Map<IEnumerable<PedidoReadDto>>(ListaPedidos);
         }
 
+        public async Task CancelarPedido(int usuarioId, int pedidoId)
+        {
+            var Pedido = await ValidarPedidoExistente(usuarioId,pedidoId);
+
+            ValidarEstadoPedido(Pedido);
+
+            FinalizarCancelado(Pedido);
+
+            await _appDbContext.SaveChangesAsync();
+
+            
+        }
+
         //METODOS SECUNDARIOS
+
+        private async Task<Pedido> ValidarPedidoExistente(int usuarioId,int pedidoId)
+        {
+            var PedidoValidado = await _appDbContext.Pedidos
+                .Include(p => p.Cosecha)
+                .FirstOrDefaultAsync(p => p.PedidoId == pedidoId && p.IdUsuario == usuarioId);
+
+            if (PedidoValidado == null)
+                throw new Exception("El Pedido no existe o no tienes permisos sobre el");
+
+            return PedidoValidado;
+        }
+
+        private void ValidarEstadoPedido(Pedido pedido)
+        {
+
+            if ((int)pedido.Estado > 5)
+                throw new Exception("El Pedido no se puede cancelar, debido a que ya paso por etapas irreversibles");
+        }
+
+        private void FinalizarCancelado(Pedido pedido)
+        {
+            pedido.Estado = EstadoPedido.Cancelado;
+            //devuelvo la cantidad cancelada al stock de la cosecha
+            pedido.Cosecha.CantidadDisponible += pedido.CantidadSolicitada;
+        }
 
         private async Task<Cosecha> ValidarCosechaExistente(int cosechaId)
         {

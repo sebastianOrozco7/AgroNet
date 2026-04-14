@@ -1,5 +1,6 @@
 ﻿using AgroNet.DTOs.CosechaDto;
 using AgroNet.DTOs.PedidoDto;
+using AgroNet.DTOs.TrazabilidadDto;
 using AgroNet.Models;
 
 namespace AgroNet.Interfaces.Pedido
@@ -11,6 +12,7 @@ namespace AgroNet.Interfaces.Pedido
 
         //Actualizar
         public Task<PedidoReadDto> ModificarEstadoPedido(int pedidoId, int usuarioAgricultorId, EstadoPedido estadoPedido);
+        public Task CancelarPedido(int usuarioId, int pedidoId);
 
         //Leer
         public Task<IEnumerable<PedidoReadDto>> VerPedidosComprador(int usuarioId, string? estado);
