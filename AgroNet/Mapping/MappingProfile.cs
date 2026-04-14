@@ -5,6 +5,7 @@ using AgroNet.DTOs.UsuarioDto;
 using AgroNet.DTOs.FincasDto;
 using AgroNet.DTOs.CosechaDto;
 using AgroNet.DTOs.PedidoDto;
+using AgroNet.DTOs.TrazabilidadDto;
 
 namespace AgroNet.Mapping
 {
@@ -51,6 +52,13 @@ namespace AgroNet.Mapping
             //Mapeo de Pedido --> PedidoReadDto
             CreateMap<Pedido,  PedidoReadDto>()
                 .ForMember(dest => dest.ProductoNombre, opt => opt.MapFrom(src => src.Cosecha.Producto.Nombre));
+
+            //TRAZABILIDADES
+
+            //Mapeo de TrazabilidadCreateDto --> Trazabilidad
+            CreateMap<TrazabilidadCreateDto, Trazabilidad>();
+            //Mapeo de Trazabilidad --> TrazabilidadReadDto
+            CreateMap<Trazabilidad, TrazabilidadReadDto>();
         }
     }
 }

@@ -11,6 +11,7 @@ using AgroNet.Interfaces.Finca;
 using System.Text.Json.Serialization;
 using AgroNet.Interfaces.Cosecha;
 using AgroNet.Interfaces.Pedido;
+using AgroNet.Interfaces.Trazabilidad;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,6 +69,7 @@ builder.Services.AddScoped<IPerfilService,PerfilService>();
 builder.Services.AddScoped<IFincaService, FincaService>();
 builder.Services.AddScoped<ICosechaService, CosechaService>();
 builder.Services.AddScoped<IPedidoService, PedidoService>();
+builder.Services.AddScoped<ITrazabilidadService, TrazabilidadService>();
 
 // --------------------------------
 // 4. Registro de AutoMapper
