@@ -41,6 +41,12 @@ namespace AgroNet.Services
         {
             //traigo las trazabilidades del usuario
             var trazabilidades = await _appDbContext.Trazabilidad
+                .Include(t => t.Pedido)
+                    .ThenInclude(p => p.Cosecha)
+                        .ThenInclude(c => c.Finca)
+                .Include(t => t.Pedido)
+                    .ThenInclude(p => p.Cosecha)
+                        .ThenInclude(c => c.Producto)
                 .Where(t => t.Pedido.IdUsuario == usuarioId)
                 .ToListAsync();
 
@@ -55,12 +61,16 @@ namespace AgroNet.Services
                 .Include(t => t.Pedido)
                     .ThenInclude(p => p.Cosecha)
                         .ThenInclude(c => c.Finca)
+                .Include(t => t.Pedido)
+                    .ThenInclude(p => p.Cosecha)
+                        .ThenInclude(c => c.Producto)
                 .Where(t => t.Pedido.Cosecha.Finca.IdUsuario == usuarioId)
                 .ToListAsync();
 
             //Mapeo
             return _mapper.Map<IEnumerable<TrazabilidadReadDto>>(trazabilidades);
         }
+
 
         //METODOS SECUNDARIOS
         private Trazabilidad PrepararTrazabilidad(Pedido pedido, TrazabilidadCreateDto trazabilidad)
@@ -85,6 +95,8 @@ namespace AgroNet.Services
             var Pedido = await _appDbContext.Pedidos
                 .Include(p => p.Cosecha)
                     .ThenInclude(c => c.Finca)
+                .Include(p => p.Cosecha)
+                    .ThenInclude(c => c.Producto) // incluyo de una vez esta relacion para que al momento de pasarle el pedido al metodo principal me mapee todo en el dto de lectura de la trazabilidad
                 .FirstOrDefaultAsync(p => p.PedidoId  == pedidoId && p.Cosecha.Finca.IdUsuario == usuarioId);
 
             if (Pedido == null)

@@ -58,7 +58,9 @@ namespace AgroNet.Mapping
             //Mapeo de TrazabilidadCreateDto --> Trazabilidad
             CreateMap<TrazabilidadCreateDto, Trazabilidad>();
             //Mapeo de Trazabilidad --> TrazabilidadReadDto
-            CreateMap<Trazabilidad, TrazabilidadReadDto>();
+            CreateMap<Trazabilidad, TrazabilidadReadDto>()
+                .ForMember(dest => dest.FincaNombre, opt => opt.MapFrom(src => src.Pedido.Cosecha.Finca.Nombre))
+                .ForMember(dest => dest.ProductoNombre, opt => opt.MapFrom(src => src.Pedido.Cosecha.Producto.Nombre));
         }
     }
 }

@@ -6,6 +6,8 @@ namespace AgroNet.DTOs.TrazabilidadDto
     {
         public int TrazabilidadId { get; set; }
         public int IdPedido { get; set; }
+        public string FincaNombre {  get; set; }
+        public string ProductoNombre { get; set; }
         public EstadoPedido EstadoAnterior { get; set; }
         public EstadoPedido EstadoNuevo { get; set; }
         public DateTime FechaCambio { get; set; } = DateTime.Now;
