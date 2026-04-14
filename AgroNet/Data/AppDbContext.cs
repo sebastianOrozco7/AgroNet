@@ -16,7 +16,6 @@ namespace AgroNet.Data
         public DbSet<Cosecha> Cosechas { get; set; }
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
-        public DbSet<DetallePedido> DetallePedidos { get; set; }
         public DbSet<Trazabilidad> Trazabilidad { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,17 +52,6 @@ namespace AgroNet.Data
                 .WithOne(p => p.Usuario)
                 .HasForeignKey(p => p.IdUsuario);
 
-            //Relacion Pedido --> DetallePedido
-            modelBuilder.Entity<Pedido>()
-                .HasMany(p => p.DetallePedidos)
-                .WithOne(d => d.Pedido)
-                .HasForeignKey(d => d.IdPedido);
-
-            //Relacion Cosecha --> DetallePedido
-            modelBuilder.Entity<Cosecha>()
-                .HasMany(c => c.DetallePedidos)
-                .WithOne(d => d.Cosecha)
-                .HasForeignKey(d => d.IdCosecha);
 
             //Relacion Pedido --> Trazabilidades
             modelBuilder.Entity<Pedido>()
@@ -90,10 +78,6 @@ namespace AgroNet.Data
 
             // Pedido: Total de la factura
             modelBuilder.Entity<Pedido>().Property(p => p.TotalPagar).HasPrecision(12, 2);
-
-            // DetallePedido: Precio congelado al momento de compra
-            modelBuilder.Entity<DetallePedido>().Property(d => d.PrecioUnitario).HasPrecision(10, 2);
-            modelBuilder.Entity<DetallePedido>().Property(d => d.CantidadComprada).HasPrecision(10, 2);
 
 
             // --- CONFIGURACIÓN DE CONVERSION EN ESTADO COSECHA ---

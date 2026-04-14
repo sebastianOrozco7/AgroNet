@@ -14,6 +14,5 @@
         public virtual Usuario Usuario { get; set; }
         public virtual Cosecha Cosecha { get; set; }
         public virtual ICollection<Trazabilidad> Trazabilidades { get; set; }
-        public virtual ICollection<DetallePedido> DetallePedidos { get; set; }
     }
 }

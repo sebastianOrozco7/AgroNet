@@ -13,7 +13,6 @@
         //Conexiones 
         public virtual Finca Finca { get; set; }
         public virtual Producto Producto { get; set; }
-        public virtual ICollection<DetallePedido> DetallePedidos { get; set; }
         public virtual ICollection<Pedido> Pedidos { get; set; } 
     }
 }
