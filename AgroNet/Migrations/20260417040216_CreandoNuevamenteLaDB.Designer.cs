@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgroNet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260327051351_CambioEnLaTablaPedidos")]
-    partial class CambioEnLaTablaPedidos
+    [Migration("20260417040216_CreandoNuevamenteLaDB")]
+    partial class CreandoNuevamenteLaDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,23 @@ namespace AgroNet.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("AgroNet.Models.CategoriaProducto", b =>
+                {
+                    b.Property<int>("CategoriaProductoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CategoriaProductoId"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("CategoriaProductoId");
+
+                    b.ToTable("CategoriasProducto");
+                });
 
             modelBuilder.Entity("AgroNet.Models.Cosecha", b =>
                 {
@@ -61,37 +78,6 @@ namespace AgroNet.Migrations
                     b.HasIndex("IdProducto");
 
                     b.ToTable("Cosechas");
-                });
-
-            modelBuilder.Entity("AgroNet.Models.DetallePedido", b =>
-                {
-                    b.Property<int>("DetallePedidoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("DetallePedidoId"));
-
-                    b.Property<decimal>("CantidadComprada")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<int>("IdCosecha")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPedido")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PrecioUnitario")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
-
-                    b.HasKey("DetallePedidoId");
-
-                    b.HasIndex("IdCosecha");
-
-                    b.HasIndex("IdPedido");
-
-                    b.ToTable("DetallePedidos");
                 });
 
             modelBuilder.Entity("AgroNet.Models.Finca", b =>
@@ -177,9 +163,8 @@ namespace AgroNet.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ProductoId"));
 
-                    b.Property<string>("Categoria")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("IdCategoria")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -190,6 +175,8 @@ namespace AgroNet.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("ProductoId");
+
+                    b.HasIndex("IdCategoria");
 
                     b.ToTable("Productos");
                 });
@@ -219,13 +206,11 @@ namespace AgroNet.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TrazabilidadId"));
 
-                    b.Property<string>("EstadoAnterior")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("EstadoAnterior")
+                        .HasColumnType("int");
 
-                    b.Property<string>("EstadoNuevo")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("EstadoNuevo")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("FechaCambio")
                         .HasColumnType("datetime(6)");
@@ -300,25 +285,6 @@ namespace AgroNet.Migrations
                     b.Navigation("Producto");
                 });
 
-            modelBuilder.Entity("AgroNet.Models.DetallePedido", b =>
-                {
-                    b.HasOne("AgroNet.Models.Cosecha", "Cosecha")
-                        .WithMany("DetallePedidos")
-                        .HasForeignKey("IdCosecha")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AgroNet.Models.Pedido", "Pedido")
-                        .WithMany("DetallePedidos")
-                        .HasForeignKey("IdPedido")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cosecha");
-
-                    b.Navigation("Pedido");
-                });
-
             modelBuilder.Entity("AgroNet.Models.Finca", b =>
                 {
                     b.HasOne("AgroNet.Models.Usuario", "Usuario")
@@ -349,6 +315,17 @@ namespace AgroNet.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("AgroNet.Models.Producto", b =>
+                {
+                    b.HasOne("AgroNet.Models.CategoriaProducto", "CategoriaProducto")
+                        .WithMany("Productos")
+                        .HasForeignKey("IdCategoria")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CategoriaProducto");
+                });
+
             modelBuilder.Entity("AgroNet.Models.Trazabilidad", b =>
                 {
                     b.HasOne("AgroNet.Models.Pedido", "Pedido")
@@ -371,10 +348,13 @@ namespace AgroNet.Migrations
                     b.Navigation("Rol");
                 });
 
+            modelBuilder.Entity("AgroNet.Models.CategoriaProducto", b =>
+                {
+                    b.Navigation("Productos");
+                });
+
             modelBuilder.Entity("AgroNet.Models.Cosecha", b =>
                 {
-                    b.Navigation("DetallePedidos");
-
                     b.Navigation("Pedidos");
                 });
 
@@ -385,8 +365,6 @@ namespace AgroNet.Migrations
 
             modelBuilder.Entity("AgroNet.Models.Pedido", b =>
                 {
-                    b.Navigation("DetallePedidos");
-
                     b.Navigation("Trazabilidades");
                 });
 

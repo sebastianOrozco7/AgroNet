@@ -17,6 +17,7 @@ namespace AgroNet.Data
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<Trazabilidad> Trazabilidad { get; set; }
+        public DbSet<CategoriaProducto> CategoriasProducto { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,6 +65,13 @@ namespace AgroNet.Data
                 .HasMany(c => c.Pedidos)
                 .WithOne(p => p.Cosecha)
                 .HasForeignKey(p => p.IdCosecha);
+
+            //Relacion Categoria --> Producto
+            modelBuilder.Entity<CategoriaProducto>()
+                .HasMany(c => c.Productos)
+                .WithOne(p => p.CategoriaProducto)
+                .HasForeignKey(p => p.IdCategoria);
+
 
 
             // --- CONFIGURACIÓN DE DECIMALES (Precisión) ---
