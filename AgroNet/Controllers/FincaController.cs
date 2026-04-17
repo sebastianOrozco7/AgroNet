@@ -1,5 +1,6 @@
 ﻿using AgroNet.DTOs.FincasDto;
 using AgroNet.Interfaces.Finca;
+using AgroNet.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -63,6 +64,21 @@ namespace AgroNet.Controllers
 
             return Ok(Finca);
         }
+
+        [HttpGet("Por Nombre")]
+        public async Task<ActionResult<FincaReadDto>> VerFincaPorNombre(
+            [FromQuery] string? NombreFinca)
+        {
+
+            var UsuarioId = ObtenerUsuarioIdDelToken();
+
+            var finca = await _fincaService.VerFincasPorNombre(UsuarioId,NombreFinca);
+
+            if (finca == null) return NotFound($"No se encontro la Finca con el Nombre {NombreFinca}");
+
+            return Ok(finca);
+        }
+
 
         [HttpPut("{fincaId}")]
         public async Task<ActionResult<FincaReadDto>> ActualizarFinca(int fincaId, FincaUpdateDto fincaUpdateDto)

@@ -6,17 +6,18 @@ namespace AgroNet.Interfaces.Cosecha
     {
 
         //Crear
-        public Task<CosechaReadDto> CrearCosecha(int usuarioId, CosechaCreateDto cosechaCreateDto);
+        Task<CosechaReadDto> CrearCosecha(int usuarioId, CosechaCreateDto cosechaCreateDto);
 
         //Leer
-        public Task<IEnumerable<CosechaReadDto>> VerCosechasDelUsuario(int usuarioId);
-        public Task<CosechaReadDto> VerCosechaPorId(int usuarioId, int cosechaId);
-        public Task<IEnumerable<CosechaReadDto>> CatalogoDeCosechas(string? producto, string? municipio);
+        Task<IEnumerable<CosechaReadDto>> VerCosechasDelUsuario(int usuarioId);
+        Task<CosechaReadDto> VerCosechaPorId(int usuarioId, int cosechaId);
+        Task<IEnumerable<CosechaReadDto>> VerCosechaPorProducto(int usuarioId, string? NombreProducto);
+        Task<IEnumerable<CosechaReadDto>> CatalogoDeCosechas(string? producto, string? municipio);
 
         //actualizar
-        public Task<CosechaReadDto> ActualizarCosecha (int  usuarioId, int cosechaId, CosechaUpdateDto cosechaUpdateDto);
+        Task<CosechaReadDto> ActualizarCosecha (int  usuarioId, int cosechaId, CosechaUpdateDto cosechaUpdateDto);
 
         //Eliminar
-        public Task<bool> EliminarCosecha(int usuarioId, int cosechaId);
+        Task<bool> EliminarCosecha(int usuarioId, int cosechaId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AgroNet.Data;
+using AgroNet.DTOs.CosechaDto;
 using AgroNet.DTOs.FincasDto;
 using AgroNet.Interfaces.Finca;
 using AgroNet.Models;
@@ -62,10 +63,25 @@ namespace AgroNet.Services
             if (Finca == null) return null;
 
             return _mapper.Map<FincaReadDto>(Finca);
-
-                
         }
 
+        public async Task<IEnumerable<FincaReadDto>> VerFincasPorNombre(int usuarioId, string? NombreFinca)
+        {
+            var Query = _appDbContext.Fincas
+               .Include (f => f.Usuario)
+               .Where(f => f.IdUsuario == usuarioId)
+               .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(NombreFinca))
+            {
+                var NombreFincaLower = NombreFinca.ToLower();
+                Query = Query.Where(f => f.Nombre.ToLower() == NombreFincaLower); // convierto todo a minuscula para que los compare exitosamente
+            }
+
+            var finca = await Query.ToListAsync();
+
+            return _mapper.Map<IEnumerable<FincaReadDto>>(finca);
+        }
 
         public async Task<FincaReadDto> ActualizarFinca(int fincaId, int usuarioId, FincaUpdateDto fincaUpdateDto)
         {

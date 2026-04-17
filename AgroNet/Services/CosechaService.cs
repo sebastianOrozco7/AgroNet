@@ -68,6 +68,25 @@ namespace AgroNet.Services
             return _mapper.Map<CosechaReadDto>(cosecha);
         }
 
+        public async Task<IEnumerable<CosechaReadDto>> VerCosechaPorProducto(int usuarioId, string? NombreProducto)
+        {
+            var Query = _appDbContext.Cosechas
+                .Include(c => c.Finca)
+                .Include(c => c.Producto)
+                .Where(c => c.Finca.IdUsuario == usuarioId)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(NombreProducto))
+            {
+                var NombreProductoLower = NombreProducto.ToLower();
+                Query = Query.Where(c => c.Producto.Nombre.ToLower() == NombreProductoLower); // convierto todo a minuscula para que los compare exitosamente
+            }
+               
+            var cosecha = await Query.ToListAsync();
+          
+            return _mapper.Map<IEnumerable<CosechaReadDto>>(cosecha);
+        }
+
         public async Task<IEnumerable<CosechaReadDto>> CatalogoDeCosechas(string? producto, string? municipio)
         {
             //esta consulta base me traera las cosechas disponibles, en crecimiento y con una cantidad disponible mayor a 0;

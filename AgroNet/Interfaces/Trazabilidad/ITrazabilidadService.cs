@@ -6,11 +6,11 @@ namespace AgroNet.Interfaces.Trazabilidad
     {
 
         //Crear
-        public Task<TrazabilidadReadDto> CrearTrazabilidad(int usuarioId, TrazabilidadCreateDto trazabilidadCreateDto);
+        Task<TrazabilidadReadDto> CrearTrazabilidad(int usuarioId, TrazabilidadCreateDto trazabilidadCreateDto);
 
         //Leer
-        public Task<IEnumerable<TrazabilidadReadDto>> VerTrazabilidadesComprador(int usuarioId);
-        public Task<IEnumerable<TrazabilidadReadDto>> VerTrazabilidadesAgricultor(int usuarioId);
+        Task<IEnumerable<TrazabilidadReadDto>> VerTrazabilidadesComprador(int usuarioId);
+        Task<IEnumerable<TrazabilidadReadDto>> VerTrazabilidadesAgricultor(int usuarioId);
 
        
     }

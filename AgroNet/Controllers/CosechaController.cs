@@ -65,6 +65,20 @@ namespace AgroNet.Controllers
             return Ok(cosecha);
         }
 
+        [HttpGet("Por Producto")]
+        public async Task<ActionResult<CosechaReadDto>> VerCosechasPorProducto(
+            [FromQuery]string? ProductoNombre)
+        {
+            //le asignamos el claim a la variable usuarioId
+            int usuarioId = ObtenerUsuarioIdDelToken();
+
+            var cosecha = await _cosechaService.VerCosechaPorProducto(usuarioId, ProductoNombre);
+
+            if (cosecha == null) return NotFound($"No se encontro la cosecha con el Nombre {ProductoNombre}");
+
+            return Ok(cosecha);
+        }
+
         [HttpGet("Catalogo")]
         public async Task<ActionResult<IEnumerable<CosechaReadDto>>> CatalogoDeCosechas(
             [FromQuery] string? producto,
