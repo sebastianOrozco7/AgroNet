@@ -132,6 +132,18 @@ builder.Services.AddControllers()
 
 builder.Services.AddEndpointsApiExplorer();
 
+
+// Configuración de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("NuevaPolitica", app =>
+    {
+        app.AllowAnyOrigin()  // Permite peticiones desde cualquier URL
+           .AllowAnyHeader()  // Permite cualquier cabecera (Headers)
+           .AllowAnyMethod(); // Permite cualquier método (GET, POST, PUT, DELETE)
+    });
+});
+
 var app = builder.Build();
 
 
@@ -145,6 +157,9 @@ var app = builder.Build();
 //}
 
 app.UseHttpsRedirection();
+
+// 1. APLICAR CORS AQUÍ
+app.UseCors("NuevaPolitica");
 
 app.UseAuthentication();
 
