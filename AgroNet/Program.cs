@@ -137,12 +137,12 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())       COMENTO ESTE IF PARA HABILITAR SWAGGER EN PRODUCCION 
+//{
     //app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 
