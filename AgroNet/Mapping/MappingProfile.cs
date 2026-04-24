@@ -6,6 +6,7 @@ using AgroNet.DTOs.FincasDto;
 using AgroNet.DTOs.CosechaDto;
 using AgroNet.DTOs.PedidoDto;
 using AgroNet.DTOs.TrazabilidadDto;
+using AgroNet.DTOs.ProductoDto;
 
 namespace AgroNet.Mapping
 {
@@ -61,6 +62,12 @@ namespace AgroNet.Mapping
             CreateMap<Trazabilidad, TrazabilidadReadDto>()
                 .ForMember(dest => dest.FincaNombre, opt => opt.MapFrom(src => src.Pedido.Cosecha.Finca.Nombre))
                 .ForMember(dest => dest.ProductoNombre, opt => opt.MapFrom(src => src.Pedido.Cosecha.Producto.Nombre));
+
+            //PRODUCTOS
+
+            //Mapeo de Producto --> ProductoReadDto
+            CreateMap<Producto, ProductoReadDto>()
+                .ForMember(dest => dest.CategoriaNombre, opt => opt.MapFrom(src => src.CategoriaProducto.Nombre));
         }
     }
 }
